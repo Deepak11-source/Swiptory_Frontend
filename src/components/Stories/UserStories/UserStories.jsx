@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./UserStories.module.css";
 import Story from "../Story/Story";
 import { Link } from "react-router-dom";
+import Loader from "../../Loader/Loader";
 
 const UserStories = (props) => {
   const [userStory, setUserStory] = useState([]);
@@ -65,7 +66,7 @@ const UserStories = (props) => {
           }}
           className={styles.categoryHeader}
         >
-          Loading...
+          <Loader/>
         </div>
       </div>
     );
@@ -89,22 +90,26 @@ const UserStories = (props) => {
     );
   }
 
-  if (userStory.length === 0) return null;
+  if (userStory.length === 0) return null;  
 
   return (
     <>
       <div className={styles.categoryContainer}>
         {<div className={styles.categoryHeader}>Your Stories</div>}
-        <div className={styles.categoryStories}>
-          {userStory.slice(0, maxStoriesInRow).map((story, index) => (
-            <Story
-              key={index}
-              story={story}
-              isAuthenticated={props.isAuthenticated}
-              handleStoryViewer={props.handleStoryViewer}
-            />
-          ))}
-        </div>
+        {isLoading && <Loader />}
+        {/* Rendering user stories */}
+        {!isLoading && (
+          <div className={styles.categoryStories}>
+            {userStory.slice(0, maxStoriesInRow).map((story, index) => (
+              <Story
+                key={index}
+                story={story}
+                isAuthenticated={props.isAuthenticated}
+                handleStoryViewer={props.handleStoryViewer}
+              />
+            ))}
+          </div>
+        )}
         {!isMobile && maxStoriesInRow < userStory.length && (
           <button
             onClick={() =>
