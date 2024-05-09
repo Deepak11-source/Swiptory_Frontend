@@ -40,7 +40,6 @@ const UserStories = (props) => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data.posts);
         setUserStory(data.posts);
       } else {
         console.error("Failed to fetch your stories");

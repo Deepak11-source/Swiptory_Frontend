@@ -58,10 +58,8 @@ const Home = () => {
 
         if (response.status === 200) {
           setIsAuthenticated(true);
-          console.log("Authentication validated successfully!");
         } else {
           setIsAuthenticated(false);
-          console.log("Authentication validation failed.");
         }
       } catch (error) {
         console.error("Token validation error:", error);

@@ -11,11 +11,12 @@ import leftArrow from "../../../assets/leftArrow.png";
 import rightArrow from "../../../assets/rightArrow.png";
 
 const StoryViewer = (props) => {
+ 
   const navigate = useNavigate();
   const slideDuration = 2000;
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const slides = props.slides;
-
+  
   const [bookmarkStatus, setBookmarkStatus] = useState(
     slides.map(() => {
       return false;
@@ -33,7 +34,7 @@ const StoryViewer = (props) => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/api/user/isBookmarked/${slides[currentSlideIndex]._id}`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/user/isBookmarked/${slides[currentSlideIndex]?._id}`,
           {
             method: "GET",
             headers: {
@@ -60,9 +61,10 @@ const StoryViewer = (props) => {
     fetchBookmarkStatus();
   }, [currentSlideIndex, bookmarkStatus, slides]);
 
-  const [likeCount, setLikeCount] = useState(
+  const [likeCount, setLikeCount] = useState(    
     slides.map((slide) => slide.likes.length)
   );
+  
   const [likeStatus, setLikeStatus] = useState(
     slides.map((slide) => slide.likes.includes(localStorage.getItem("userId")))
   );
@@ -158,13 +160,15 @@ const StoryViewer = (props) => {
     }
   };
 
-  const handleShare = (slideIndex) => {
+  const handleShare = (slideIndex) => {;
+    console.log("Slide Index:", slideIndex);
+    console.log("Slides:", slides);
+    console.log("Likes:", slides[slideIndex].likes);
     const link = `${process.env.REACT_APP_FRONTEND_URL}/?slide=true&id=${slides[slideIndex]._id}`;
     navigator.clipboard.writeText(link);
     const newLinkCopiedStatus = [...linkCopiedStatus];
     newLinkCopiedStatus[slideIndex] = true;
     setLinkCopiedStatus(newLinkCopiedStatus);
-
     setTimeout(() => {
       const newLinkCopiedStatus = [...linkCopiedStatus];
       newLinkCopiedStatus[slideIndex] = false;
@@ -215,7 +219,7 @@ const StoryViewer = (props) => {
           </div>
           <div
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0 ), rgba(0, 0, 0,  0.8)), linear-gradient(rgba(0, 0, 0, 0.2 ), rgba(0, 0, 0,   0)) , url(${slides[currentSlideIndex].imageUrl})`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0 ), rgba(0, 0, 0,  0.8)), linear-gradient(rgba(0, 0, 0, 0.2 ), rgba(0, 0, 0,   0)) , url(${slides[currentSlideIndex]?.imageUrl})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -229,10 +233,10 @@ const StoryViewer = (props) => {
             )}
 
             <div className={styles.categoryStoryHeader}>
-              {slides[currentSlideIndex].header}
+              {slides[currentSlideIndex]?.header}
             </div>
             <div className={styles.categoryStoryDescription}>
-              {slides[currentSlideIndex].description}
+              {slides[currentSlideIndex]?.description}
             </div>
           </div>
 

@@ -6,7 +6,7 @@ const Slide = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
-  const [slideData, setSlideData] = useState(null);
+  const [slideData, setSlideData] = useState([]);
 
   useEffect(() => {
     async function fetchSlide() {
@@ -16,7 +16,7 @@ const Slide = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setSlideData([data.slide]);
+          setSlideData([data]);
         } else {
           console.error("Failed to fetch slide data");
         }
